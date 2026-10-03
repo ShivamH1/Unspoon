@@ -1,7 +1,7 @@
 # Story 01 — Foundation
 
 > **Roadmap:** [Phase 0 — Foundation](../product/PRODUCT_ROADMAP.md), tasks T1–T6.
-> **Status:** Draft, awaiting product-owner approval. Modules are written only after this story is approved.
+> **Status:** Approved 2026-10-03. Modules: [`spec/modules/01-foundation/`](../modules/01-foundation/).
 > **Read first:** [PRODUCT_CONTEXT.md](../product/PRODUCT_CONTEXT.md) · [PRODUCT_ROADMAP.md](../product/PRODUCT_ROADMAP.md) · [STACK.md](../product/STACK.md).
 
 ## Outcome
@@ -44,15 +44,19 @@ Each traces to a Phase 0 exit criterion in the roadmap.
 - RevenueCat, Paddle, the vision driver, pg-boss, push notifications, PostHog, and Sentry. Their versions are checked for compatibility here; none is installed or integrated until the phase that uses it.
 - Production domains and store listings (Phase 5).
 
-## Needed from the product owner
+## Settled by the product owner (2026-10-03)
 
-These block the story or parts of it:
+- **Repository:** `github.com/ShivamH1/Unspoon`, with `main`, `development`, and one branch per module.
+- **Database:** Supabase Postgres, used through its connection URL only.
+- **App name:** Unspoon.
+- **Region:** Mumbai, for now.
 
-1. **A GitHub repository** to push to. The local repo has no remote yet, and CI cannot run without one.
-2. **Hosting accounts** for the API, Postgres, and the static web host. [STACK.md](../product/STACK.md) §13 names Railway, Neon, and Cloudflare Pages as defaults that are not yet checked against region or price — confirm or replace them.
-3. **An Expo account** for EAS builds.
-4. **App identity:** the display name, and the iOS bundle identifier and Android package name (for example `com.<company>.unspoon`). These are painful to change after store submission.
-5. **Region:** where the first users are, to place the API and database.
+## Still needed from the product owner
+
+1. **The Supabase database URL** (module 05). It goes in a local `.env` and later in the hosts' secret stores. It is never committed and never pasted into a chat.
+2. **An Expo account** for EAS builds (module 06).
+3. **The iOS bundle identifier and Android package name**, for example `com.<company>.unspoon` (module 06). These are painful to change after store submission.
+4. **Accounts on the API host and the static web host**, once the deploy module has chosen them (module 07).
 
 ## Risks
 
