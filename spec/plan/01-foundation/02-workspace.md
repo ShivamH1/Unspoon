@@ -1,6 +1,6 @@
 # Plan 01.02 — Workspace
 
-> **Module:** [01.02 — Workspace](../../modules/01-foundation/02-workspace.md) · **Branch:** `workspace` · **Commit prefix:** `S01.M02`
+> **Module:** [01.02 — Workspace](../../modules/01-foundation/02-workspace.md) · **Branch:** `feature/workspace` · **Commit prefix:** `S01.M02`
 > **Status:** Draft, awaiting approval. No step starts until this plan is agreed.
 
 ## Approach
@@ -21,7 +21,7 @@ fnm also needs one line added to `~/.zshrc` to switch automatically. That edit i
 
 ## Steps
 
-One step is one commit. Each step's checkbox is ticked in the commit that completes it.
+Each step is at least one commit and usually several: a configuration change, its check, and any decision it forces are committed separately and share the step's id. A step's checkbox is ticked in the commit that completes it. Decisions go into `spec/decisions/01-foundation/02-workspace.md` as they are made, each in its own commit.
 
 - [ ] **1. Pin Node and pnpm.** Add `.node-version` (24.21.0), a private root `package.json` with `packageManager: pnpm@12.8.1` and `engines` for Node and pnpm, and `pnpm-workspace.yaml` listing `apps/*` and `packages/*` with engine checks strict. Confirm the exact setting names against pnpm 12.8.1 when writing them.
   - *Check:* `pnpm install` succeeds under Node 24.21.0 and fails with a clear message under Node 26.
