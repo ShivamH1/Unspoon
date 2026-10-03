@@ -28,6 +28,29 @@ The versions an Expo SDK prescribes come from the `bundledNativeModules.json` fi
 
 ## 1. Expo SDK
 
+**Chosen: Expo SDK 57** — `expo` 57.0.26, the version the registry's `latest` tag points to.
+
+| SDK | Registry status | `@clerk/expo` 4.8.0 | `react-native-purchases` 10.11.0 | `@sentry/react-native` |
+|---|---|---|---|---|
+| 58 | Not released as stable: published under the `next` tag (58.0.3) | Excluded — peer range is `expo >=54 <58` | Accepted | Accepted |
+| **57** | **Stable: `latest` → 57.0.26** | **Accepted** | **Accepted** — needs `react-native >=0.73.0` | **Accepted** — needs `expo >=49.0.0` |
+| 56 and older | Stable, superseded | Accepted down to 54 | Accepted | Accepted |
+
+**Nothing constrained the choice.** The newest stable SDK is supported by all three native dependencies, so the risk the plan named — being forced onto an old SDK — did not occur.
+
+**Clerk will constrain the next upgrade.** Its peer range stops below SDK 58. Moving to SDK 58 waits for a Clerk release that widens it.
+
+**Clerk's compatibility article was out of date.** It covers SDK 54 and 55, which is why [STACK.md](../../product/STACK.md) §14 listed this as a risk. The package's declared peer range is the stronger evidence and is what this decision rests on.
+
+SDK 57 brings:
+
+| Package | Version |
+|---|---|
+| `react-native` | 0.86.3 |
+| `react` | 19.2.3 |
+| `react-dom` | 19.2.3 |
+| `react-native-web` | ~0.21.0 (newest patch 0.21.3) |
+
 ## 2. App dependencies
 
 ## 3. Server and tooling
