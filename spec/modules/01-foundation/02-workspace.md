@@ -1,7 +1,7 @@
 # Module 01.02 — Workspace
 
 > **Story:** [01 — Foundation](../../stories/01-foundation.md) · **Covers:** S01-AC1, S01-AC10 (in part) · **Depends on:** 01.01
-> **Status:** Approved 2026-10-03.
+> **Status:** Built 2026-10-03 on branch `feature/workspace`; awaiting review and merge to `development`.
 
 ## Purpose
 
