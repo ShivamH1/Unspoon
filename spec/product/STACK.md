@@ -103,7 +103,7 @@ api: requireUser → quota check → spend-ceiling check → vision call → Zod
 
 ## 5. Data, sync, and jobs
 
-- **Database:** managed Postgres.
+- **Database:** Postgres hosted by Supabase in Mumbai, reached only through its connection URL in `DATABASE_URL` (decided 2026-10-03). Supabase is the database host and nothing more: no `@supabase/*` package, no Supabase Auth, Storage, Realtime, or client anywhere in the repo. The URL must be a non-pooled connection, which Prisma migrations and pg-boss both need.
 - **ORM:** Prisma, server-side only. Schema and migrations live in `apps/api/prisma`. Migrations are forward-only and applied by the deploy, never by hand.
 - **Access rule:** every user-scoped query goes through repository helpers that require a `userId`. No route touches the Prisma client directly.
 - **The day log** is the durable record: append-only rows keyed `(userId, localDate, kind, detail)`. Streak, best streak, lifetime totals, and freeze balance are derived on read by `packages/core`, never stored.
@@ -112,6 +112,7 @@ api: requireUser → quota check → spend-ceiling check → vision call → Zod
 
 ## 6. Client app — Expo
 
+- **App name:** Unspoon.
 - **Framework:** Expo with Expo Router; web through React Native Web. Current SDK is 57 (React Native 0.86, React 19) *(verified, Expo docs)* — pin to the newest SDK that `@clerk/expo` supports (§14).
 - **Development builds from day one.** In-app purchases do not run in Expo Go.
 - **Local store.** One `DayLogStore` interface in `packages/core` with two adapters: `expo-sqlite` on iOS and Android, IndexedDB on web. `expo-sqlite`'s web build is alpha and needs cross-origin isolation headers *(verified)*, which can break third-party sign-in and checkout embeds, so web does not use it. One conformance suite in `packages/core` runs against every adapter.
@@ -174,13 +175,13 @@ No live LLM, Clerk, or store calls in CI: recorded fixtures, including malformed
 
 | Piece | Default | Requirement that drives it |
 |---|---|---|
-| API + job worker | One always-on container (Railway) | pg-boss needs a long-lived process |
-| Postgres | Managed, with point-in-time recovery (Neon) | Subscription data must be restorable |
+| API + job worker | One always-on container; host chosen in the deploy module | pg-boss needs a long-lived process, and the API must run in or beside Mumbai, next to its database |
+| Postgres | Supabase, Mumbai — connection URL only (§5) | Subscription data must be restorable: backups are confirmed on the chosen plan before launch |
 | Web app | Static export on Cloudflare Pages | No server rendering needed |
 | iOS and Android | EAS Build, Submit, and Update | Over-the-air fixes during the January spike |
 | Domains | `app.<domain>` and `api.<domain>` | Clerk production needs a custom domain |
 
-The three named hosts are defaults, not verified against region or price. They are confirmed at scaffold time (§14).
+The region is Mumbai for now (decided 2026-10-03); users are global, so it is revisited once real traffic shows where they are. The API host and the static web host are still open and are settled in the deploy module (§14).
 
 ## 14. Open decisions and things to verify
 
@@ -199,7 +200,8 @@ The three named hosts are defaults, not verified against region or price. They a
 - `chat.completions.parse` with an image and a Zod schema against the Gemini endpoint. Google's own example still uses the SDK's older `beta.` path.
 - The Gemini free-tier limits shown in AI Studio for the project.
 - PostHog's Expo SDK on web.
-- Host regions and pricing for §13, against where the first users are.
+- An API host with a Mumbai region, and a static web host, for §13.
+- Supabase's non-pooled connection string working from the chosen API host, and its backup and recovery terms on the chosen plan.
 
 **Approvals with lead time — owned by the product owner**
 

@@ -32,6 +32,12 @@
 - **A step's checkbox is ticked in the plan in the same commit that completes it.**
 - **Decisions are written as they are made**, not reconstructed afterwards ([STACK.md](./STACK.md) §11).
 
+**Branches**
+- **`main`** is released history. It receives `development` once every module of a phase is merged; the phase's exit criteria are then checked against `main` and its deploy, and the phase tag is created when they pass.
+- **`development`** is the integration branch, cut from `main`. Stories and module breakdowns are committed here.
+- **One branch per module, named after the module** — `version-pins`, `workspace`, `api` — never after the story. It is cut from `development` and merged back by pull request when the module's acceptance criteria pass. The module's plan, its code, and its decisions file all live on that branch.
+- **Module names are unique across stories**, so branch names never collide.
+
 **Commit rules**
 - **One plan step = one commit, pushed to GitHub.** If a step is too big for one commit, split it in the plan first.
 - **Spec changes are their own `docs:` commits**, never mixed with code — except ticking a step's checkbox.
@@ -43,10 +49,10 @@
 - Every commit is a rollback point: the repo builds and runs at each one.
 - A step spanning code, schema, and content lands them in one commit, in a compatible state.
 - Migrations are forward-only and additive first. A destructive change lands one phase after the code stops using what it removes, so rolling back the app never requires rolling back the database.
-- Rollback is `git revert` or redeploying an earlier tag. Never `git reset` or a force-push on `main`.
+- Rollback is `git revert` or redeploying an earlier tag. Never `git reset` or a force-push on `main` or `development`.
 
 **Versioning**
-- Finishing Phase N tags `v0.N.0`, in the commit that flips its Status to Done. Fixes after a tag bump the patch number.
+- Finishing Phase N tags `v0.N.0` on `main`, after `development` is merged and the exit criteria pass, in the commit that flips its Status to Done. Fixes after a tag bump the patch number.
 - `v1.0.0` is the Phase 5 launch build.
 
 ## Status
