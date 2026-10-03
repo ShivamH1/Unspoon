@@ -94,6 +94,26 @@ Tools that are run, not depended on:
 
 ## 3. Server and tooling
 
+| Package | Version | Source | Compatibility evidence | First installed |
+|---|---|---|---|---|
+| Node.js | 24.21.0 | Newest LTS line ("Krypton") on `nodejs.org`. Node 26 is the "Current" line, not yet LTS | Accepted by every `engines` range in this file (§4) | Phase 0 |
+| `pnpm` | 12.8.1 | `latest` | Node `>=18` | Phase 0 |
+| `typescript` | 6.0.3 | Expo's SDK 57 template (`~6.0.3`) — npm `latest` is 7.0.2; see §4 | Prisma needs `>=5.4.0` | Phase 0 |
+| `@types/node` | 24.19.1 | Newest 24.x | Matches Node 24 | Phase 0 |
+| `@biomejs/biome` | 2.5.15 | `latest` | Node `>=14.21.3` | Phase 0 |
+| `zod` | 4.6.5 | `latest` | `openai` accepts `^3.25 \|\| ^4.0` | Phase 0 |
+| `vitest` | 5.0.3 | `latest` | Node `^22.12.0 \|\| ^24.0.0 \|\| >=26.0.0` | Phase 0 |
+| `fastify` | 5.12.5 | `latest` — `next` is 6.0.0-alpha.4 | — | Phase 0 |
+| `prisma` | 7.10.0 | **Not `latest`**: that tag points to 8.0.0-rc.19, a release candidate. 7.10.0 is the newest stable, under the `prev` tag; see §4 | Node `^20.19 \|\| ^22.12 \|\| >=24.0` | Phase 0 |
+| `@prisma/client` | 7.10.0 | `latest` | `typescript >=5.4.0`; same Node range | Phase 0 |
+| `@prisma/adapter-pg` | 7.10.0 | `latest` | Depends on `pg ^8.16.3` | Phase 0, if module 05 confirms Prisma 7 needs a driver adapter |
+| `pg` | 8.23.1 | `latest` | Node `>=16` | With the adapter |
+| `@fastify/cors` | 11.3.0 | `latest` | — | Phase 2 |
+| `@clerk/fastify` | 3.1.85 | `latest` | `fastify >=5`, Node `>=20.9.0` | Phase 2 |
+| `openai` | 7.27.0 | `latest` | `zod ^3.25 \|\| ^4.0`, Node `>=22.0.0` | Phase 3 |
+| `pg-boss` | 12.36.0 | `latest` | Node `>=22.12.0` | Phase 4 |
+| `@sentry/node` | 11.4.0 | `latest` | — | Phase 5 |
+
 ## 4. Cross-checks
 
 ## 5. Decisions and learnings
