@@ -1,7 +1,7 @@
 # Module 01.01 — Version pins
 
 > **Story:** [01 — Foundation](../../stories/01-foundation.md) · **Covers:** S01-AC9 · **Depends on:** nothing
-> **Status:** Built 2026-10-03 on branch `version-pins`; awaiting merge to `development`.
+> **Status:** Done 2026-10-03. Built on branch `version-pins` and merged to `development`.
 
 ## Purpose
 
