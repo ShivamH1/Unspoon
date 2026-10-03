@@ -52,3 +52,25 @@ Error: ERR_PNPM_UNSUPPORTED_ENGINE
 - **`.env.example` lists no variable yet.** No module has introduced one. Each module that does adds its variable there, with a comment naming the app that reads it.
 
 Checked with `git check-ignore`: `.env`, `.env.local`, `.env.production`, `apps/app/.env`, `.DS_Store`, and `node_modules/` are ignored; `.env.example`, `package.json`, and source files are not.
+
+## 3. TypeScript
+
+**The base config holds strictness and hygiene only.** `module`, `target`, `lib`, and JSX settings are left to each package, because the three consumers differ: the app is bundled by Metro and extends Expo's own config, the API runs on Node, and the shared packages are read by both. A base that set those would be wrong for at least one of them.
+
+| Flag | Why it is on |
+|---|---|
+| `strict` | The baseline; stated even though TypeScript 6 defaults to it, so the intent survives a default changing |
+| `noUncheckedIndexedAccess` | Reading `array[i]` or `record[key]` yields `T \| undefined`. The streak engine walks a day log by index and by date key; this makes a missing day a compile error instead of a runtime one |
+| `noImplicitOverride` | An overriding method must say so |
+| `noImplicitReturns` | Every code path in a function returns |
+| `noFallthroughCasesInSwitch` | A `switch` case cannot fall into the next by accident |
+| `isolatedModules` | Each file must be compilable alone, which Metro, Babel, and Vitest all require |
+| `skipLibCheck` | Dependencies' own type files are not re-checked; only our code is |
+
+**Left off on purpose:**
+
+- **`exactOptionalPropertyTypes`.** It treats "missing" and "explicitly `undefined`" as different, which is correct but collides with how Zod, Prisma, and React Native type their optional fields. The friction lands on every boundary with a library. It can be turned on per package later if a package wants it.
+- **`noUnusedLocals` and `noUnusedParameters`.** Biome reports unused code, with better messages and an auto-fix. Two tools reporting the same thing is noise.
+- **`verbatimModuleSyntax`.** Its right value depends on each package's module format, so it is a per-package setting.
+
+**The root `typecheck` script runs each package's own `typecheck`** (`pnpm -r --if-present run typecheck`). There is no root-level `tsc` run: TypeScript errors when given no input files, and each package needs its own settings anyway. On the empty workspace the script reports "No projects matched" and exits 0.

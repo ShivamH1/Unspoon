@@ -27,7 +27,7 @@ Each step is at least one commit and usually several: a configuration change, it
   - *Check:* `pnpm install` succeeds under Node 24.21.0 and fails with a clear message under Node 26.
 - [x] **2. Ignore rules and the env list.** Add `.gitignore` covering dependencies, build output, Expo and test caches, logs, OS files such as `.DS_Store`, and every `.env*` file except `.env.example`. Add `.env.example` with a header explaining the rule; it lists no variable yet, because no module has introduced one.
   - *Check:* `git check-ignore` confirms `.env`, `.env.local`, and `.DS_Store` are ignored and `.env.example` is not.
-- [ ] **3. TypeScript.** Install `typescript@6.0.3` and `@types/node@24.19.1` at the root. Add `tsconfig.base.json` with `strict` and the stricter flags recorded in the decisions file. Add the root `typecheck` script, which runs each workspace package's own `typecheck`.
+- [x] **3. TypeScript.** Install `typescript@6.0.3` and `@types/node@24.19.1` at the root. Add `tsconfig.base.json` with `strict` and the stricter flags recorded in the decisions file. Add the root `typecheck` script, which runs each workspace package's own `typecheck`.
   - *Check:* `pnpm typecheck` passes on the empty workspace.
 - [ ] **4. Biome.** Install `@biomejs/biome@2.5.15` at the root. Add `biome.json` with the recommended lint rules, the formatter, and git-ignore awareness. Add the root `lint` and `format` scripts.
   - *Check:* `pnpm lint` passes on the repo as it stands.
