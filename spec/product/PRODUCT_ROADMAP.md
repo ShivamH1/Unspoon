@@ -35,7 +35,8 @@
 **Branches**
 - **`main`** is released history. It receives `development` once every module of a phase is merged; the phase's exit criteria are then checked against `main` and its deploy, and the phase tag is created when they pass.
 - **`development`** is the integration branch, cut from `main`. Stories and module breakdowns are committed here.
-- **One branch per module, named after the module** — `version-pins`, `workspace`, `api` — never after the story. It is cut from `development` and merged back by pull request when the module's acceptance criteria pass. The module's plan, its code, and its decisions file all live on that branch.
+- **One branch per module: `feature/<module-name>`** — `feature/version-pins`, `feature/workspace`, `feature/api` — named after the module, never after the story. It is cut from `development` and merged back by pull request when the module's acceptance criteria pass. The module's plan, its code, and its decisions file all live on that branch.
+- **One branch per bug: `fixed/<bug-name>`** — for example `fixed/streak-resets-at-midnight`. It is cut from `development` and merged back by pull request. A bug found inside a module that is not merged yet is fixed on that module's own branch.
 - **Module names are unique across stories**, so branch names never collide.
 
 **Commit rules**
