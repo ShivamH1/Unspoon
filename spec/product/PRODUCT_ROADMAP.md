@@ -55,7 +55,7 @@
 
 - **A plan step is at least one commit and usually several.** They share the step's id. A step too big to follow in its commits is split in the plan first.
 - **Spec changes are their own `docs:` commits**, never mixed with code — except ticking a step's checkbox, which rides with the commit that completes the step.
-- Format: `<type>(<scope>): S<story>.M<module>.<step> <summary>`, e.g. `feat(core): S02.M01.3 streak survives timezone change` for step 3 of module 01 of story 02. Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`. Scopes: `core`, `content`, `api`, `app`, `spec`.
+- Format: `<type>(<scope>): S<story>.M<module>.<step> <summary>`, e.g. `feat(core): S02.M01.3 streak survives timezone change` for step 3 of module 01 of story 02. Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`. Scopes: `core`, `content`, `api`, `app`, `spec`, and `repo` for root-level tooling and configuration.
 - **No co-author or tool-attribution trailers** on any commit.
 - Every commit leaves the gates in [STACK.md](./STACK.md) §12 green. The one permitted red is a failing test committed on purpose, made green by the very next commit.
 
