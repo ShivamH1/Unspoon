@@ -31,7 +31,7 @@ Each step is at least one commit and usually several: a configuration change, it
   - *Check:* `pnpm typecheck` passes on the empty workspace.
 - [x] **4. Biome.** Install `@biomejs/biome@2.5.15` at the root. Add `biome.json` with the recommended lint rules, the formatter, and git-ignore awareness. Add the root `lint` and `format` scripts.
   - *Check:* `pnpm lint` passes on the repo as it stands.
-- [ ] **5. One command for every gate.** Add the root `test` script, which runs each workspace package's own `test`, and the root `check` script, which runs lint, then typecheck, then test, and stops at the first failure.
+- [x] **5. One command for every gate.** Add the root `test` script, which runs each workspace package's own `test`, and the root `check` script, which runs lint, then typecheck, then test, and stops at the first failure.
   - *Check:* a planted lint error makes `pnpm check` fail; a planted type error in a temporary workspace package makes it fail. Neither plant is committed; both results are recorded in the decisions file.
 - [ ] **6. README, decisions, and the clean-clone proof.** Extend the README with the setup steps and the commands. Complete the decisions file. Clone the branch into an empty folder, then run `pnpm install` and `pnpm check` there.
   - *Check:* the clean clone passes with only the documented steps, and every command in the README exists.

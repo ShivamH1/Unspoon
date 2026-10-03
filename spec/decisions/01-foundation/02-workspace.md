@@ -83,3 +83,29 @@ Checked with `git check-ignore`: `.env`, `.env.local`, `.env.production`, `apps/
 - **`spec/` needs no exclusion.** It holds only Markdown, which Biome does not process. If a JSON or TypeScript file ever lands there, Biome will check it like any other.
 
 On the repo as it stands, `pnpm lint` checks three files (`package.json`, `tsconfig.base.json`, `biome.json`) and passes.
+
+## 5. One command for every gate
+
+**`pnpm check` runs the Node guard, then lint, then typecheck, then test, and stops at the first failure.** CI will run this one command and nothing else, so a gate added later by extending these scripts reaches CI without touching the workflow.
+
+**`test` and `typecheck` fan out to the packages.** Each runs the script of the same name in every workspace package that has one. A package joins a gate by defining the script; the root never lists packages.
+
+**A Node guard was added, closing the gap from §1.** Testing showed pnpm checks the Node version on a fresh install but not when it runs a script: with dependencies already installed, `pnpm check` ran to completion under Node 26. `scripts/check-node.mjs` now runs first. It reads `.node-version`, so the pin still lives in one place, and it has no dependencies. Under Node 26.7.0 `pnpm check` exits 1 with:
+
+```
+Unspoon needs Node 24.x at 24.21.0 or newer, and this is Node 26.7.0.
+Switch to the version in .node-version, then run the command again.
+```
+
+**The gates were seen to fail.** Each plant was temporary and was never committed.
+
+| Plant | Result |
+|---|---|
+| A root file with an unused variable and a `debugger` statement | `pnpm check` exits 1 at lint: `lint/suspicious/noDebugger` |
+| A temporary package with `const count: number = "three"` | `pnpm check` exits 1 at typecheck: `error TS2322: Type 'string' is not assignable to type 'number'` |
+| The same package reading `days[0]` from a `number[]` into a `number` | `pnpm check` exits 1: `Type 'number \| undefined' is not assignable to type 'number'` — the base config's `noUncheckedIndexedAccess` reaches a package that extends it |
+| The same package with valid code | `pnpm check` exits 0 |
+
+The temporary package also showed that a workspace package's `typecheck` script finds the root's `tsc` without installing TypeScript again.
+
+**The test gate cannot be seen to fail yet.** No package has a test runner until module 03 adds Vitest, so its red run is recorded there.
