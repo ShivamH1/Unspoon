@@ -3,6 +3,8 @@
 > Part of the spec triad: [PRODUCT_CONTEXT.md](./PRODUCT_CONTEXT.md) (what & why) · **PRODUCT_ROADMAP.md** (when) · [STACK.md](./STACK.md) (with what).
 > **Timing constraint:** the January demand spike is the business ([PRODUCT_CONTEXT.md](./PRODUCT_CONTEXT.md) §Core Thesis). Phases 0–6 must complete before mid-December; the cohort challenge (Phase 7) goes live for January 1. Slipping past January means waiting a year — scope gets cut before dates do.
 
+> **Clean rebuild declared 2026-10-02 — nothing below is built in this repo.** `Unspoon` starts from zero code on the stack in [STACK.md](./STACK.md). Everything below was written against the previous repo and its stack: every Status entry, every "Done", and every reference to `apps/demo`, `apps/web`, `apps/mobile`, hand-built auth, Bun, or barcode code (including the removal task P4.T9) describes that repo, not this one. This file is owed a rewrite once STACK.md is approved. Until then, read it for the feature sequence and the exit criteria only.
+
 ## Rules for agents
 
 - **One phase at a time.** Build only the active phase. Features from later phases are out of scope even if adjacent code is open — no pulling work forward.

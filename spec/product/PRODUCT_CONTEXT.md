@@ -32,13 +32,13 @@ A quit-sugar app: the proven streak/recovery engine (Quittr playbook) combined w
 - **No food photo retention.** Scan photos are never stored at all — not to object storage, not to disk, not to a column, not to a log line ([STACK.md](./STACK.md) §4, §7). We are not building a dataset of users' meals, and there is no dataset to build one from.
 - **No chat, no AI coach.** The LLM estimates sugar; it never converses. Timeline and SOS copy is authored, not generated.
 - **No social feed/friends at MVP.** Cohorts are a counter and a shared push, not a feed. Social beyond that waits for retention proof.
-- **Web and mobile ship together.** A sales demo on web comes first (roadmap Phase 1); from Phase 2 on, every user-facing feature lands on both surfaces in the same phase — neither platform drifts ahead. Photo *capture* is mobile-camera; web reaches the same scan pipeline via photo upload.
+- **Web and mobile are one app.** A single Expo codebase serves iOS, Android, and web ([STACK.md](./STACK.md) §6), so a feature lands on all three in the same change — no surface drifts ahead. Photo *capture* is the device camera on mobile; web reaches the same scan pipeline via photo upload.
 - **No ads, no data selling.** Revenue is subscription only.
 - **No barcode scanning, no food database.** A barcode is not a dependable route to a sugar figure: the public product databases behind it carry total sugars at best, have gaps, and say nothing about unpackaged food. The label on the pack is the source of truth for packaged goods, read by the scanner each time — no OpenFoodFacts, no product cache, no catalogue of our own to curate.
 
 ## Architectural Constraints
 
-- **API is the single gateway.** The mobile and web apps talk only to our Fastify API — never to Postgres/Supabase or any LLM directly; no `@supabase/*` imports in `apps/mobile` or `apps/web`. Auth is our own: DB-backed sessions, argon2id passwords, opaque bearer tokens on mobile and httpOnly cookies on web ([STACK.md](./STACK.md) §3). NO Supabase Auth; Supabase is managed Postgres + transient object storage only.
+- **API is the single gateway.** The app talks only to our Fastify API for product data — never to Postgres or any LLM directly. Two managed SDKs are the exceptions, each for the one thing it owns: Clerk for sign-in and the payments SDK for purchases. Identity is Clerk's ([STACK.md](./STACK.md) §3): the API verifies Clerk session tokens and keys every row by the Clerk user id; it stores no passwords and issues no sessions of its own. There is no object storage anywhere in the stack.
 - **One domain core.** Streak engine, teaspoon conversion, verdict thresholds, quota math — pure TypeScript in `packages/core`, shared by client and server. No logic forks.
 - **Scanner is server-side composition.** Label read, food estimate, quota, and cost guard all live in the Fastify API ([STACK.md](./STACK.md) §4). No Python service, no Docker sidecar — it's HTTP out, JSON back.
 - **Offline-first except scans.** Streak, checklist, craving log, and timeline work in airplane mode; only scanning requires network, and it degrades gracefully.
@@ -51,7 +51,7 @@ A quit-sugar app: the proven streak/recovery engine (Quittr playbook) combined w
 - A label scan is a read, not an estimate: the verdict comes from the figures printed on the pack, and a blurred, cropped, or partial label is a handled "couldn't read that — try again" — it never falls through to a guess.
 - Vision-LLM output is untrusted input: Zod-validated, confidence-gated, and a malformed response is a handled "couldn't read that — try again" state, never a crash or a fabricated verdict.
 - Strict TypeScript, Biome-clean, CI green — non-negotiable on every PR. See [STACK.md](./STACK.md) §12.
-- Every user-scoped query goes through `userId`-required repository helpers; session and reset tokens stored hashed; scan photos verifiably never written anywhere, which tests and repo-wide greps both check. Craving logs and quiz answers are sensitive — DB rows only, never in analytics events.
+- Every user-scoped query goes through `userId`-required repository helpers, keyed by the Clerk user id the API verified; we hold no passwords or session tokens; scan photos verifiably never written anywhere, which tests and repo-wide greps both check. Craving logs and quiz answers are sensitive — DB rows only, never in analytics events.
 - Analytics events are named in one registry module; no ad-hoc event strings.
 
 ## Working Agreement
