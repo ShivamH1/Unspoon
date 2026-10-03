@@ -30,4 +30,5 @@ Start with the three files in `spec/product/`:
 
 - `main` — released history
 - `development` — integration branch
-- one branch per module, named after the module, cut from `development`
+- `feature/<module-name>` — one branch per module, cut from `development`
+- `fixed/<bug-name>` — one branch per bug, cut from `development`
