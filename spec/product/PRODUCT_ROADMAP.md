@@ -29,7 +29,7 @@
 - **A story covers one roadmap phase or a slice of one.** It names the phase and the roadmap tasks it covers, and its acceptance criteria trace to that phase's exit criteria.
 - **The module is the unit of work.** One module gets one plan, one build, and one decisions file, all at the same path in their folders, so any of the three leads to the other two.
 - **Each stage is approved before the next begins.** The product owner approves a story before it is broken into modules, the modules before plans are written, and a plan before any code. A module the product owner wrote needs no approval.
-- **A step's checkbox is ticked in the plan in the same commit that completes it.**
+- **A step's checkbox is ticked in the plan in the commit that completes the step.**
 - **Decisions are written as they are made**, not reconstructed afterwards ([STACK.md](./STACK.md) §11).
 
 **Branches**
@@ -40,8 +40,21 @@
 - **Module names are unique across stories**, so branch names never collide.
 
 **Commit rules**
-- **One plan step = one commit, pushed to GitHub.** If a step is too big for one commit, split it in the plan first.
-- **Spec changes are their own `docs:` commits**, never mixed with code — except ticking a step's checkbox.
+- **Commit small and often, and push each commit to GitHub.** The history is the record of how the module was built, so each of these is its own commit:
+
+  | What happened | Commit type |
+  |---|---|
+  | A plan was written, or changed | `docs(spec)` |
+  | A test was written | `test` |
+  | The code that makes it pass was written | `feat` |
+  | A decision was made | `docs(spec)`, committed when the decision is made, not at the end |
+  | A bug was fixed | `fix` |
+  | A change was made in response to a review | `fix` or `refactor`, one commit per review point |
+  | Code was reshaped without changing behaviour | `refactor` |
+  | Tooling or configuration changed | `chore` |
+
+- **A plan step is at least one commit and usually several.** They share the step's id. A step too big to follow in its commits is split in the plan first.
+- **Spec changes are their own `docs:` commits**, never mixed with code — except ticking a step's checkbox, which rides with the commit that completes the step.
 - Format: `<type>(<scope>): S<story>.M<module>.<step> <summary>`, e.g. `feat(core): S02.M01.3 streak survives timezone change` for step 3 of module 01 of story 02. Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`. Scopes: `core`, `content`, `api`, `app`, `spec`.
 - **No co-author or tool-attribution trailers** on any commit.
 - Every commit leaves the gates in [STACK.md](./STACK.md) §12 green. The one permitted red is a failing test committed on purpose, made green by the very next commit.
