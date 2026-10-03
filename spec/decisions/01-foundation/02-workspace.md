@@ -109,3 +109,32 @@ Switch to the version in .node-version, then run the command again.
 The temporary package also showed that a workspace package's `typecheck` script finds the root's `tsc` without installing TypeScript again.
 
 **The test gate cannot be seen to fail yet.** No package has a test runner until module 03 adds Vitest, so its red run is recorded there.
+
+## 6. README and the clean-clone proof
+
+**The README documents setup as four steps and lists exactly the five root scripts**: `check`, `lint`, `format`, `typecheck`, `test`. It names fnm as an example, not a requirement: any manager that reads `.node-version` works.
+
+**Clean-clone proof, 2026-10-03.** The branch was cloned from GitHub into an empty folder, at commit `88e1bc8`, and only the README's steps were run:
+
+| Step | Result |
+|---|---|
+| `fnm install && fnm use` | Node v24.21.0 |
+| `corepack enable` | pnpm 12.8.1 |
+| `pnpm install` | Exit 0; installed `typescript` 6.0.3 and `@types/node` 24.19.1 from the lockfile |
+| `pnpm check` | Exit 0; Biome checked 4 files |
+
+## Verification
+
+The module's four acceptance criteria:
+
+1. **Clean clone works** — proven above.
+2. **A lint error and a type error each fail `pnpm check`** — proven in §5.
+3. **`.DS_Store` and env files cannot be committed by accident** — proven in §2 with `git check-ignore`.
+4. **The README's commands are exactly the ones that exist** — the README lists five commands and `package.json` defines the same five.
+
+## Carried to later modules
+
+- **Module 03** adds Vitest and records the test gate failing, which could not be shown here.
+- **Module 04** runs `pnpm check` in CI and must set up Node from `.node-version` and pnpm through Corepack, the same way a developer does.
+- **Module 06** decides whether the native `ios/` and `android/` folders are generated or committed, and adds the ignore rule to match.
+- **The Homebrew Node 26 on this machine is unchanged.** Outside this folder, or in a shell without fnm's line in `~/.zshrc`, `node` is still 26 and `pnpm` is not on the path.

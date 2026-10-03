@@ -1,7 +1,7 @@
 # Plan 01.02 — Workspace
 
 > **Module:** [01.02 — Workspace](../../modules/01-foundation/02-workspace.md) · **Branch:** `feature/workspace` · **Commit prefix:** `S01.M02`
-> **Status:** Approved 2026-10-03, including the machine setup.
+> **Status:** Approved 2026-10-03, including the machine setup; all six steps complete.
 
 ## Approach
 
@@ -33,7 +33,7 @@ Each step is at least one commit and usually several: a configuration change, it
   - *Check:* `pnpm lint` passes on the repo as it stands.
 - [x] **5. One command for every gate.** Add the root `test` script, which runs each workspace package's own `test`, and the root `check` script, which runs lint, then typecheck, then test, and stops at the first failure.
   - *Check:* a planted lint error makes `pnpm check` fail; a planted type error in a temporary workspace package makes it fail. Neither plant is committed; both results are recorded in the decisions file.
-- [ ] **6. README, decisions, and the clean-clone proof.** Extend the README with the setup steps and the commands. Complete the decisions file. Clone the branch into an empty folder, then run `pnpm install` and `pnpm check` there.
+- [x] **6. README, decisions, and the clean-clone proof.** Extend the README with the setup steps and the commands. Complete the decisions file. Clone the branch into an empty folder, then run `pnpm install` and `pnpm check` there.
   - *Check:* the clean clone passes with only the documented steps, and every command in the README exists.
 
 ## Files touched
