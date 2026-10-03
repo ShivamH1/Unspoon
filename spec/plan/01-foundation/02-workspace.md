@@ -1,7 +1,7 @@
 # Plan 01.02 — Workspace
 
 > **Module:** [01.02 — Workspace](../../modules/01-foundation/02-workspace.md) · **Branch:** `feature/workspace` · **Commit prefix:** `S01.M02`
-> **Status:** Draft, awaiting approval. No step starts until this plan is agreed.
+> **Status:** Approved 2026-10-03, including the machine setup.
 
 ## Approach
 
