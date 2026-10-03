@@ -12,13 +12,14 @@ A quit-sugar app, built spec-first. `spec/product/` is the source of truth; this
 
 Story → module → plan → code → decisions. Each stage is a file under `spec/`, and the product owner approves each stage before the next one starts. Code for a module starts when its plan is agreed.
 
-The module is the unit of work: one module, one branch named after the module and cut from `development`, one plan, one decisions file.
+The module is the unit of work: one module, one branch `feature/<module-name>` cut from `development`, one plan, one decisions file. A bug gets its own branch, `fixed/<bug-name>`.
 
 ## Rules that hold on every change
 
 - Build the active phase only, one module at a time.
 - Install the versions recorded in `spec/decisions/01-foundation/01-version-pins.md`; every dependency is a stable release.
 - When the code and the spec disagree, fix the spec in the same change, as its own `docs:` commit.
+- Commit small and often, and push each commit: a plan, a test, the code that passes it, a decision, a fix, and each review point are separate commits.
 - A commit message ends where the message ends: no co-author line and no tool attribution.
 - Supabase is the Postgres host only. The repo holds its connection URL and no Supabase package.
 - This is a clean rebuild. Build from this repo's spec alone; the earlier repo at `../sugar-quit` is not a reference.
