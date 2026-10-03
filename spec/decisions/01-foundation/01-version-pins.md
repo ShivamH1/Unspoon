@@ -116,4 +116,34 @@ Tools that are run, not depended on:
 
 ## 4. Cross-checks
 
+Each check compares one pin against the ranges the other pins declare.
+
+| # | Check | Result |
+|---|---|---|
+| 1 | **One React version.** 19.2.3 against `@clerk/expo` (`^18 \|\| ^19`), `zustand` (`>=18`), `@testing-library/react-native` (`>=19`), `test-renderer` (`^19`), and `jest-expo`'s bundled `react-test-renderer` (19.2.3) | Pass |
+| 2 | **Expo version.** 57.0.26 against `@clerk/expo` (`>=54 <58`) and `@sentry/react-native` (`>=49`) | Pass |
+| 3 | **React Native version.** 0.86.3 against `@clerk/expo` (`>=0.75`), `react-native-purchases` (`>=0.73.0`), `react-native-view-shot` 5.1.0 (`>=0.76.0`), `@testing-library/react-native` (`>=0.78`) | Pass |
+| 4 | **Node version.** 24.21.0 against `react-native` (`^24.3.0`), `vitest` (`^24.0.0`), `prisma` and `@prisma/client` (`>=24.0`), `pg-boss` (`>=22.12.0`), `openai` (`>=22.0.0`), `@clerk/fastify` and `@clerk/expo` (`>=20.9.0`), `@testing-library/react-native` (`>=24`), `jest` 29.7.0 (`>=18.0.0`), `pnpm` (`>=18`) | Pass |
+| 5 | **TypeScript version.** Expo's SDK 57 template pins `~6.0.3`; `@prisma/client` needs `>=5.4.0` | Conflict with npm `latest` — resolved below |
+| 6 | **Zod version.** 4.6.5 against `openai` (`^3.25 \|\| ^4.0`) | Pass |
+| 7 | **Jest version.** `jest-expo` 57.0.5 depends on the Jest 29 packages (`^29.2.1`); `@testing-library/react-native` needs `>=29` | Conflict with npm `latest` — resolved below |
+| 8 | **Fastify version.** 5.12.5 against `@clerk/fastify` (`>=5`) | Pass |
+| 9 | **Prisma set.** CLI, client, and adapter all at 7.10.0; the adapter's `pg ^8.16.3` against `pg` 8.23.1 | Pass, once the CLI is pinned off `latest` — resolved below |
+| 10 | **Packages Expo manages.** The SDK 57 prescription against npm `latest` for `@sentry/react-native` and `react-native-view-shot` | Conflict with npm `latest` — resolved below |
+
+**Conflicts and how each was resolved.** In every case the registry's `latest` tag was not the right answer:
+
+- **TypeScript: 6.0.3, not 7.0.2.** TypeScript 7 is stable, but Expo SDK 57 is built and templated against 6.0. The repo uses one TypeScript version, so the app's constraint decides it. Moving to 7 is its own change, after Expo supports it.
+- **Prisma CLI: 7.10.0, not 8.0.0-rc.19.** The `latest` tag on the `prisma` package points to a release candidate, while `@prisma/client`'s `latest` is 7.10.0. A plain `pnpm add prisma` would install a pre-release and a CLI one major version ahead of its client. Always install `prisma@7.10.0` explicitly.
+- **Jest: 29.7.0, not 30.5.2.** `jest-expo` for SDK 57 is built on Jest 29. Jest 30 beside it would put two Jest majors in one test run.
+- **React: 19.2.3, not 19.3.0.** The SDK pins React exactly, and React Native 0.86.3 is built against it.
+- **`@sentry/react-native`: ~7.11.0, not 8.29.0.** Version 8 declares support for Expo 49 and later, but SDK 57 prescribes the 7.11 line, and `npx expo install` and `expo-doctor` both enforce the prescription. It is not installed until Phase 5; re-check then, because Expo may move its prescription within SDK 57's lifetime.
+- **`react-native-view-shot`: 5.1.0, not 6.1.0.** Same reason: the SDK prescribes it.
+
+**Not checkable without installing** — each is left to the module that first installs it:
+
+- pnpm 12 with Expo's Metro bundler resolving workspace packages (module 06).
+- Whether Prisma 7's client needs the `pg` driver adapter in this setup (module 05).
+- `@clerk/fastify` accepting a Bearer token from the native app (Phase 2).
+
 ## 5. Decisions and learnings
