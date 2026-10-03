@@ -18,7 +18,7 @@ A quit-sugar app: the proven streak/recovery engine (Quittr playbook) combined w
 
 ## Product Surface (MVP)
 
-- **Quiz funnel:** sugar habits, triggers, health goals → personalized "sugar-free plan" → hard paywall (RevenueCat).
+- **Quiz funnel:** sugar habits, triggers, health goals → personalized "sugar-free plan" → hard paywall (RevenueCat). The quiz and plan need no account; sign-up happens at the paywall, just before purchase.
 - **Streak + body timeline:** day counter fused with "what's happening in your body today," day 1–30+. A week of unbroken check-ins earns a **streak freeze** (at most two held) that is spent automatically on a missed day and shown on the timeline afterwards — ordinary life does not cost the story, and nothing is stored: the balance is derived from the same log as the streak.
 - **Label scan:** photo of a packaged product's nutrition label → the vision LLM reads the printed sugar figures → free-sugars verdict — traffic light + teaspoon visualization.
 - **Food scan:** vision-LLM sugar estimate for unpackaged food (dessert, chai, cereal), same verdict UI.
