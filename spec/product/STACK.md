@@ -21,7 +21,7 @@ apps/
 packages/
   core/       pure domain logic: streak, teaspoons, verdict, quota, sync merge
   content/    timeline, quiz, checklist, SOS copy as Zod-validated JSON
-spec/         product · stories · plan · decisions
+spec/         product · stories · modules · plan · decisions
 ```
 
 | Concern | Choice |
@@ -154,7 +154,7 @@ Confirmed 2026-10-03. The business is registered in India and sells globally, wh
 
 ## 11. Decisions
 
-A change to anything in this file is an ADR in `spec/decisions/`, in the same change that makes it: what was chosen, what was rejected, and why. Per-story learnings live beside them.
+A change to anything in this file is recorded in `spec/decisions/`, in the decisions file of the module that makes it (`spec/decisions/NN-<story>/MM-<module>.md`), and this file is updated in the same change: what was chosen, what was rejected, and why. The module's other decisions and learnings live in that same file. The full workflow is in [PRODUCT_ROADMAP.md](./PRODUCT_ROADMAP.md) §Spec Workflow, Commits & Versioning.
 
 ## 12. Quality gates
 

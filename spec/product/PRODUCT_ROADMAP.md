@@ -14,18 +14,29 @@
 - **One app, three surfaces.** Every user-facing feature works on iOS, Android, and web in the change that adds it ([STACK.md](./STACK.md) §6). Photo capture is the camera on mobile and file upload on web.
 - **Stable dependencies only** ([STACK.md](./STACK.md) §2, Dependency policy).
 
-## Stories, Plans, Commits & Versioning
+## Spec Workflow, Commits & Versioning
 
-**Story → plan → build** (spec directories: `product/` · `stories/` · `plan/` · `decisions/`)
-- The tasks below are the phase-level breakdown. Before implementation, each phase or slice of one gets a **story file** in `spec/stories/NN-<name>.md`, authored by the product owner.
-- For each story the agent writes a matching **plan** in `spec/plan/NN-<name>.md`: ordered tasks and steps, files touched, risks, and verification checks. **Implementation starts only after the plan is agreed.**
-- Decisions and learnings from a story are recorded in `spec/decisions/` ([STACK.md](./STACK.md) §11).
-- The agreed plan is the source of `T`/`S` numbering. A step's checkbox is ticked in the plan in the same commit that completes it.
+**Product → story → module → plan → build → decisions.** Development is spec-driven: every stage is a file under `spec/`, and each stage is written from the one before it.
+
+| Folder | What a file is | Written by | Path |
+|---|---|---|---|
+| `spec/product/` | What, when, and with what — this triad | Product owner with the agent | `spec/product/*.md` |
+| `spec/stories/` | One slice of the product: what it delivers, its acceptance criteria, what is out of scope | Agent | `spec/stories/NN-<story>.md` |
+| `spec/modules/` | One buildable unit of a story: its purpose, its interface to other modules, its acceptance criteria, what it depends on | Agent, or the product owner when they choose | `spec/modules/NN-<story>/MM-<module>.md` |
+| `spec/plan/` | How one module gets built: ordered steps, files touched, risks, verification checks | Agent | `spec/plan/NN-<story>/MM-<module>.md` |
+| `spec/decisions/` | What the agent decided while building one module: the choice, what was rejected, why, and what was learned | Agent | `spec/decisions/NN-<story>/MM-<module>.md` |
+
+- **A story covers one roadmap phase or a slice of one.** It names the phase and the roadmap tasks it covers, and its acceptance criteria trace to that phase's exit criteria.
+- **The module is the unit of work.** One module gets one plan, one build, and one decisions file, all at the same path in their folders, so any of the three leads to the other two.
+- **Each stage is approved before the next begins.** The product owner approves a story before it is broken into modules, the modules before plans are written, and a plan before any code. A module the product owner wrote needs no approval.
+- **A step's checkbox is ticked in the plan in the same commit that completes it.**
+- **Decisions are written as they are made**, not reconstructed afterwards ([STACK.md](./STACK.md) §11).
 
 **Commit rules**
-- **One step = one commit, pushed to GitHub.** If a step is too big for one commit, split it in the plan first.
+- **One plan step = one commit, pushed to GitHub.** If a step is too big for one commit, split it in the plan first.
 - **Spec changes are their own `docs:` commits**, never mixed with code — except ticking a step's checkbox.
-- Format: `<type>(<scope>): P<phase>.T<task>.S<step> <summary>`, e.g. `feat(core): P1.T1.S3 streak survives timezone change`. Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`. Scopes: `core`, `content`, `api`, `app`, `spec`.
+- Format: `<type>(<scope>): S<story>.M<module>.<step> <summary>`, e.g. `feat(core): S02.M01.3 streak survives timezone change` for step 3 of module 01 of story 02. Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`. Scopes: `core`, `content`, `api`, `app`, `spec`.
+- **No co-author or tool-attribution trailers** on any commit.
 - Every commit leaves the gates in [STACK.md](./STACK.md) §12 green. The one permitted red is a failing test committed on purpose, made green by the very next commit.
 
 **Rollback**
@@ -122,7 +133,7 @@ The revenue spine. Identity per [STACK.md](./STACK.md) §3; payments per §8.
 
 The daily hook, per [STACK.md](./STACK.md) §4. Every scan is a photo and a vision call; there is no lookup path.
 
-**Product decisions the scanner story must settle first**
+**Product decisions the scanner story must settle before its modules are written**
 1. How free sugars are scored from a label that prints only total sugars.
 2. Where the share card's product name comes from, since a nutrition label does not carry one: typed by the user, read from a second photo, or left off the card.
 3. The daily scan quota for free and subscribed users, now that every scan is a paid call.
