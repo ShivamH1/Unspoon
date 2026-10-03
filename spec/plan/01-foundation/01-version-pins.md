@@ -1,6 +1,6 @@
 # Plan 01.01 — Version pins
 
-> **Module:** [01.01 — Version pins](../../modules/01-foundation/01-version-pins.md) · **Branch:** `version-pins` · **Commit prefix:** `S01.M01`
+> **Module:** [01.01 — Version pins](../../modules/01-foundation/01-version-pins.md) · **Branch:** `feature/version-pins` · **Commit prefix:** `S01.M01`
 > **Status:** Approved 2026-10-03; all six steps complete.
 
 ## Approach
