@@ -41,7 +41,7 @@ There is no `packages/ui` and no `packages/db`: with one app, components live in
 ### Dependency policy — stable only
 
 - **A dependency ships only at a stable, generally available release.** No alpha, beta, release-candidate, canary, or preview versions of any library, SDK, or package, and no feature a vendor labels beta or experimental inside an otherwise stable package.
-- **Versions are the latest stable at scaffold time, pinned by the lockfile.** Nothing floats.
+- **Versions are the latest stable at scaffold time, pinned by the lockfile.** Nothing floats. The exact version of every dependency, with its evidence, is in [`spec/decisions/01-foundation/01-version-pins.md`](../decisions/01-foundation/01-version-pins.md); installs name the version from that file, because a registry's `latest` tag can point to a pre-release.
 - **The Expo SDK is the newest one every native dependency officially supports** — Clerk, RevenueCat, and Sentry — even when that is not the newest SDK Expo has released.
 - **Upgrades are deliberate changes**, each its own commit with CI green. No upgrades between store submission and the end of January except security fixes.
 - **Adding a dependency needs a reason the platform cannot meet.** Fewer packages is the cheapest form of stability.
@@ -113,7 +113,7 @@ api: requireUser → quota check → spend-ceiling check → vision call → Zod
 ## 6. Client app — Expo
 
 - **App name:** Unspoon.
-- **Framework:** Expo with Expo Router; web through React Native Web. Current SDK is 57 (React Native 0.86, React 19) *(verified, Expo docs)* — pin to the newest SDK that `@clerk/expo` supports (§14).
+- **Framework:** Expo with Expo Router; web through React Native Web. Pinned to Expo SDK 57 (React Native 0.86.3, React 19.2.3), the newest stable SDK, which Clerk, RevenueCat, and Sentry all support *(verified 2026-10-03, [version pins](../decisions/01-foundation/01-version-pins.md))*.
 - **Development builds from day one.** In-app purchases do not run in Expo Go.
 - **Local store.** One `DayLogStore` interface in `packages/core` with two adapters: `expo-sqlite` on iOS and Android, IndexedDB on web. `expo-sqlite`'s web build is alpha and needs cross-origin isolation headers *(verified)*, which can break third-party sign-in and checkout embeds, so web does not use it. One conformance suite in `packages/core` runs against every adapter.
 - **Styling:** React Native `StyleSheet` plus one design-token module. No Tailwind layer: it adds build configuration and a version-compatibility risk for no feature the product needs.
@@ -193,8 +193,9 @@ The region is Mumbai for now (decided 2026-10-03); users are global, so it is re
 
 **Verify at scaffold time**
 
-- The newest Expo SDK that `@clerk/expo`, `react-native-purchases`, and Sentry all support. Clerk's published compatibility note covers SDK 54 and 55, not 57.
-- That every package in §2–§10 is at a stable release on the day it is installed, per the dependency policy.
+- ~~The newest Expo SDK that Clerk, RevenueCat, and Sentry all support~~ — resolved: SDK 57 ([version pins](../decisions/01-foundation/01-version-pins.md) §1).
+- ~~That every package in §2–§10 is at a stable release~~ — resolved: pinned with evidence in the same file.
+- Whether Clerk's native UI components are still beta at `@clerk/expo` 4.x, before Phase 2.
 - `@clerk/fastify` accepting the Bearer token from the native app.
 - RevenueCat Web Purchase Links with Paddle hosted checkout, end to end in sandbox, for an India-registered Paddle account.
 - `chat.completions.parse` with an image and a Zod schema against the Gemini endpoint. Google's own example still uses the SDK's older `beta.` path.

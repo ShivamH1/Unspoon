@@ -147,3 +147,21 @@ Each check compares one pin against the ranges the other pins declare.
 - `@clerk/fastify` accepting a Bearer token from the native app (Phase 2).
 
 ## 5. Decisions and learnings
+
+- **The `latest` tag is not proof of stability.** Prisma's points to a release candidate. The suffix check in the method is what caught it; a habit of `pnpm add <package>` would not have. Every install names its version.
+- **For packages Expo manages, the SDK's prescription outranks npm `latest`.** Use `npx expo install` for them, never a bare package-manager add.
+- **Developer machines need Node 24.** The machine this was researched on runs Node 26.7.0, which is the "Current" line, not LTS. Module 02 enforces the pin, so a Node version manager is needed locally.
+- **`@clerk/expo` is at major version 4.** [STACK.md](../../product/STACK.md) §3 records Clerk's native UI components as beta, checked against version 3.1. Re-check that before Phase 2 builds the sign-in screens; if they have left beta, custom screens are no longer forced.
+- **Expo SDK 58 is in pre-release.** It will likely become stable before launch. The pins stay on SDK 57: the dependency policy allows no upgrades between store submission and the end of January, and Clerk does not yet accept SDK 58.
+- **Adding a dependency later** means adding its row here first, with the same evidence, in the same change that installs it.
+- **Rows can move forward by a patch.** Each row was true on 2026-10-03. A module that installs later may take a newer stable patch of the same line and update the row in that change.
+
+## Verification
+
+Checked against the plan's five conditions on 2026-10-03:
+
+1. Every dependency named in [STACK.md](../../product/STACK.md) §2–§10 has a row. Paddle and IndexedDB have none because neither is an installed package: Paddle's checkout is hosted, and IndexedDB is part of the browser.
+2. No row is an alpha, beta, release candidate, canary, or preview.
+3. Every version was read from the registry with the commands in the method on the day recorded.
+4. The Expo SDK section names what constrained the choice: nothing did, and Clerk constrains the next one.
+5. §4 lists the ten cross-checks performed, with the ranges compared.
