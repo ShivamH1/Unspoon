@@ -1,7 +1,7 @@
 # Plan 01.01 — Version pins
 
 > **Module:** [01.01 — Version pins](../../modules/01-foundation/01-version-pins.md) · **Branch:** `version-pins` · **Commit prefix:** `S01.M01`
-> **Status:** Draft, awaiting approval. No step starts until this plan is agreed.
+> **Status:** Approved 2026-10-03.
 
 ## Approach
 
@@ -18,7 +18,7 @@ Every row is backed by evidence anyone can reproduce:
 
 One step is one commit. Each step's checkbox is ticked in the commit that completes it.
 
-- [ ] **1. Decisions file and method.** Create the decisions file with the evidence method above and an empty table: package, version, where it runs, stable evidence, compatibility evidence, installed in which phase.
+- [x] **1. Decisions file and method.** Create the decisions file with the evidence method above and an empty table: package, version, where it runs, stable evidence, compatibility evidence, installed in which phase.
 - [ ] **2. Choose the Expo SDK.** List the Expo SDKs that are currently stable and still supported. For each, check whether `@clerk/expo`, `react-native-purchases`, and `@sentry/react-native` have a stable release that supports it. Pick the newest SDK all three support, state which package was the constraint, and record the React Native, React, and React Native Web versions that SDK brings.
 - [ ] **3. Pin the app's dependencies.** For the chosen SDK, record the versions it prescribes for Expo Router, `expo-sqlite`, `expo-camera`, `expo-image-picker`, `expo-image-manipulator`, `expo-notifications`, `expo-secure-store`, and `expo-sharing`; then the stable, compatible versions of `react-native-view-shot`, Zustand, `posthog-react-native`, jest-expo, and React Native Testing Library; and the Maestro release.
 - [ ] **4. Pin the server and the tooling.** Node (current LTS), pnpm, TypeScript, Biome, Zod, Vitest, Fastify, `@clerk/fastify`, Prisma, pg-boss, `openai`, and `@sentry/node`.
