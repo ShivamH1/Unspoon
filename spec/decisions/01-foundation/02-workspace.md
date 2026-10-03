@@ -74,3 +74,12 @@ Checked with `git check-ignore`: `.env`, `.env.local`, `.env.production`, `apps/
 - **`verbatimModuleSyntax`.** Its right value depends on each package's module format, so it is a per-package setting.
 
 **The root `typecheck` script runs each package's own `typecheck`** (`pnpm -r --if-present run typecheck`). There is no root-level `tsc` run: TypeScript errors when given no input files, and each package needs its own settings anyway. On the empty workspace the script reports "No projects matched" and exits 0.
+
+## 4. Biome
+
+- **The config is Biome's own generated default for 2.5.15, kept as generated.** It turns on the recommended lint rules, the formatter, import sorting, and git-ignore awareness, so anything `.gitignore` excludes is skipped without a second list to maintain. Starting from the default means every later deviation is a visible, deliberate edit.
+- **Tabs for indentation, double quotes in JavaScript and TypeScript.** Both are Biome's defaults. No style rule here is worth an argument, so the defaults stand.
+- **`lint` checks; `format` fixes.** `pnpm lint` is `biome check .`: it reports lint, format, and import-order problems and changes nothing, which is what a gate must do. `pnpm format` is `biome check --write .` and applies the safe fixes.
+- **`spec/` needs no exclusion.** It holds only Markdown, which Biome does not process. If a JSON or TypeScript file ever lands there, Biome will check it like any other.
+
+On the repo as it stands, `pnpm lint` checks three files (`package.json`, `tsconfig.base.json`, `biome.json`) and passes.

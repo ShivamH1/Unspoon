@@ -29,7 +29,7 @@ Each step is at least one commit and usually several: a configuration change, it
   - *Check:* `git check-ignore` confirms `.env`, `.env.local`, and `.DS_Store` are ignored and `.env.example` is not.
 - [x] **3. TypeScript.** Install `typescript@6.0.3` and `@types/node@24.19.1` at the root. Add `tsconfig.base.json` with `strict` and the stricter flags recorded in the decisions file. Add the root `typecheck` script, which runs each workspace package's own `typecheck`.
   - *Check:* `pnpm typecheck` passes on the empty workspace.
-- [ ] **4. Biome.** Install `@biomejs/biome@2.5.15` at the root. Add `biome.json` with the recommended lint rules, the formatter, and git-ignore awareness. Add the root `lint` and `format` scripts.
+- [x] **4. Biome.** Install `@biomejs/biome@2.5.15` at the root. Add `biome.json` with the recommended lint rules, the formatter, and git-ignore awareness. Add the root `lint` and `format` scripts.
   - *Check:* `pnpm lint` passes on the repo as it stands.
 - [ ] **5. One command for every gate.** Add the root `test` script, which runs each workspace package's own `test`, and the root `check` script, which runs lint, then typecheck, then test, and stops at the first failure.
   - *Check:* a planted lint error makes `pnpm check` fail; a planted type error in a temporary workspace package makes it fail. Neither plant is committed; both results are recorded in the decisions file.
