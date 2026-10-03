@@ -43,3 +43,12 @@ Error: ERR_PNPM_UNSUPPORTED_ENGINE
 **A gap in that check.** When dependencies are already installed and nothing has changed, `pnpm install` under the wrong Node prints "Already up to date" and exits 0: pnpm skips the engine check on that path. A fresh clone is always checked, which is the case that matters most. Step 5 decides whether `pnpm check` needs its own guard.
 
 **New commit scope: `repo`.** Root-level tooling belongs to none of `core`, `content`, `api`, `app`, or `spec`. The roadmap's scope list gains `repo` for it.
+
+## 2. What git ignores
+
+- **Every `.env` file is ignored, at any depth; only `.env.example` is tracked.** The rule is written as "ignore `.env` and `.env.*`, then un-ignore `.env.example`", so a new variant such as `.env.staging` is covered without anyone remembering to add it.
+- **Signing credentials are ignored by extension** (`.jks`, `.keystore`, `.p8`, `.p12`, `.mobileprovision`). They are secrets that tools tend to drop into the project folder.
+- **Native `ios/` and `android/` folders are not decided here.** Whether they are generated or committed is the app module's decision (01.06), which adds its own rule.
+- **`.env.example` lists no variable yet.** No module has introduced one. Each module that does adds its variable there, with a comment naming the app that reads it.
+
+Checked with `git check-ignore`: `.env`, `.env.local`, `.env.production`, `apps/app/.env`, `.DS_Store`, and `node_modules/` are ignored; `.env.example`, `package.json`, and source files are not.
