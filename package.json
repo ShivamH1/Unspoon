@@ -12,6 +12,8 @@
 		"typescript": "6.0.3"
 	},
 	"scripts": {
-		"typecheck": "pnpm -r --if-present run typecheck"
+		"typecheck": "pnpm -r --if-present run typecheck",
+		"lint": "biome check .",
+		"format": "biome check --write ."
 	}
 }
